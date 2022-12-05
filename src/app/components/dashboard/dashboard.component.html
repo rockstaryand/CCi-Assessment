@@ -1,0 +1,84 @@
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <form
+        (ngSubmit)="searchRepositories()"
+        id="search-form"
+        class="d-flex"
+        role="search"
+        #f="ngForm"
+      >
+        <input
+          class="form-control me-2"
+          type="search"
+          ngModel
+          name="search"
+          placeholder="Search or jump to"
+          aria-label="Search"
+          required
+          #search="ngModel"
+        />
+        <p
+          class="text-danger error block"
+          *ngIf="!search.valid && search.touched"
+        >
+          <small>Fill in field!</small>
+        </p>
+        <button class="btn btn-search" [disabled]="!f.valid" type="submit">
+          Search
+        </button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container text-center" *ngIf="displayUserRepositoryList">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <br />
+      <h2>Repositories Found for: {{ searchText }}</h2>
+      <hr />
+    </div>
+    <div class="col-md-12">
+      <div class="card p-4" *ngFor="let repo of repos; let i = index">
+        <div class="card-header">Featured</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ repo.name }}</h5>
+          <p class="card-text">
+            {{ repo.description }}
+          </p>
+          <a
+            routerLink="/user/{{ repo.id }}"
+            class="btn btn-primary"
+            routerLinkActive="active"
+            >View repository</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container text-center mt-4" *ngIf="!displayUserRepositoryList">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="alert alert-danger" role="alert">
+          No repositories found for {{ searchText }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
